@@ -1,7 +1,7 @@
+require("dotenv").config();
 const express = require("express");
 const app = express();
 const cors = require("cors");
-require("dotenv").config();
 const pool = require("./db");
 
 
@@ -53,7 +53,7 @@ app.put("/todos/:id", async (req,res) => {
        const { id } = req.params;
        const { description } = req.body;
        const updateTodo = await pool.query(
-        "UPDATE todo SET description = $1 FROM WHERE todo_id = $2",
+        "UPDATE todo SET description = $1 WHERE todo_id = $2",
         [description, id]
         );
 
