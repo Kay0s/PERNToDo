@@ -1,6 +1,4 @@
 import React, { Fragment, useState } from "react";
-require("dotenv").config();
-
 
 const InputTodo = () => {
   const [description, setDescription] = useState("");
@@ -9,14 +7,14 @@ const InputTodo = () => {
     e.preventDefault();
     try {
       const body = { description };
-      const host = process.env.PGHOST
-      const response = await fetch(`http://${host}/todos`, {
+      const response = await fetch("http://localhost:5000/todos", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body)
       });
 
-      window.location = "/";
+      console.log(response);
+    
     } catch (err) {
       console.error(err.message);
     }
