@@ -1,15 +1,15 @@
 import React, { Fragment, useEffect, useState } from "react";
 
-// import EditTodo from "./EditTodo";
+import EditTodo from "./EditTodo";
 
- const ListTodos = () => {
- const [todos, setTodos] = useState([]);
+const ListTodos = () => {
+  const [todos, setTodos] = useState([]);
 
-//delete todo function
+  //delete todo function
 
-  async function deleteTodo(id) {
+  const deleteTodo = async id => {
     try {
-       const res = await fetch(`http://localhost:5000/todos/${id}`, {
+      const deleteTodo = await fetch(`http://localhost:5000/todos/${id}`, {
         method: "DELETE"
       });
 
@@ -19,15 +19,16 @@ import React, { Fragment, useEffect, useState } from "react";
     }
   };
 
- async function getTodos () {
-      const res = await fetch("http://localhost:5000/todos");
+  const getTodos = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/todos");
+      const jsonData = await response.json();
 
-      const  todoArray = await res.json();
-
-      setTodos(todoArray);
-
-}
-
+      setTodos(jsonData);
+    } catch (err) {
+      console.error(err.message);
+    }
+  };
 
   useEffect(() => {
     getTodos();
@@ -37,7 +38,7 @@ import React, { Fragment, useEffect, useState } from "react";
 
   return (
     <Fragment>
-       {" "}
+      {" "}
       <table class="table mt-5 text-center">
         <thead>
           <tr>
@@ -47,23 +48,31 @@ import React, { Fragment, useEffect, useState } from "react";
           </tr>
         </thead>
         <tbody>
+          {/*<tr>
+            <td>John</td>
+            <td>Doe</td>
+            <td>john@example.com</td>
+          </tr> */}
           {todos.map(todo => (
             <tr key={todo.todo_id}>
               <td>{todo.description}</td>
-              <td>Edit</td>
-              <button className="btn 
-              btn-danger" onClick={() => 
-              deleteTodo(todo.todo_id)}
-              >
-                Delete
+              <td>
+                <EditTodo todo={todo} />
+              </td>
+              <td>
+                <button
+                  className="btn btn-danger"
+                  onClick={() => deleteTodo(todo.todo_id)}
+                >
+                  Delete
                 </button>
+              </td>
             </tr>
-          ))} 
-        </tbody> 
-      </table> 
+          ))}
+        </tbody>
+      </table>
     </Fragment>
   );
- };
+};
 
 export default ListTodos;
-
